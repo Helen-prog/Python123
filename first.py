@@ -3337,7 +3337,12 @@ import os.path
 # print_tree("Work")
 
 # print("Hello")
-
+import re
 print("Вносим изменения в склонированный проект")
 
 print("Новые изменения")
+
+s = "google.com and google.ru"
+reg = r'(([a-z0-9-]{2,}\.)+[a-z]{2,4})'
+print(re.sub(reg, r'http://\1', s))
+
