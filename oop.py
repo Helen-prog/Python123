@@ -204,69 +204,69 @@
 
 # print("Численность роботов:", Robot.k)
 
-class Point:
-    WIDTH = 5
-    z = 100
-
-    def __init__(self, x, y):
-        self.__x = x
-        self.__y = y
-
-
-
-    # def __getattr__(self, name):
-    #     return f"В классе {__class__.__name__} отсутствует атрибут: {name}"
-
-    # def __getattribute__(self, item):
-    #     if item == "_Point__x":
-    #         return 0
-    #     else:
-    #         return object.__getattribute__(self, item)
-
-    def __setattr__(self, key, value):
-        if key == "z":
-            raise AttributeError
-        else:
-            self.__dict__[key] = value
-
-    def check_val(z):
-        if isinstance(z, int) or isinstance(z, float):
-            return True
-        return False
-
-    def set_coords(self, x, y):
-        if Point.check_val(x) and Point.check_val(y):
-            self.__x = x
-            self.__y = y
-        else:
-            print("Координаты должны быть числами")
-
-    def set_coords_x(self, x):
-        if Point.check_val(x):
-            self.__x = x
-        else:
-            print("Координаты должны быть числами")
-
-    def set_coords_y(self, y):
-        if Point.check_val(y):
-            self.__y = y
-        else:
-            print("Координаты должны быть числами")
-
-    def get_coords(self):
-        return self.__x, self.__y
-
-    def get_coords_x(self):
-        return self.__x
-
-    def get_coords_y(self):
-        return self.__y
-
-    def area(self):
-        return (self.__x * self.__y) + self.z
-
-
-p1 = Point(5, 10)
+# class Point:
+#     WIDTH = 5
+#     z = 100
+#
+#     def __init__(self, x, y):
+#         self.__x = x
+#         self.__y = y
+#
+#
+#
+#     # def __getattr__(self, name):
+#     #     return f"В классе {__class__.__name__} отсутствует атрибут: {name}"
+#
+#     # def __getattribute__(self, item):
+#     #     if item == "_Point__x":
+#     #         return 0
+#     #     else:
+#     #         return object.__getattribute__(self, item)
+#
+#     def __setattr__(self, key, value):
+#         if key == "z":
+#             raise AttributeError
+#         else:
+#             self.__dict__[key] = value
+#
+#     def check_val(z):
+#         if isinstance(z, int) or isinstance(z, float):
+#             return True
+#         return False
+#
+#     def set_coords(self, x, y):
+#         if Point.check_val(x) and Point.check_val(y):
+#             self.__x = x
+#             self.__y = y
+#         else:
+#             print("Координаты должны быть числами")
+#
+#     def set_coords_x(self, x):
+#         if Point.check_val(x):
+#             self.__x = x
+#         else:
+#             print("Координаты должны быть числами")
+#
+#     def set_coords_y(self, y):
+#         if Point.check_val(y):
+#             self.__y = y
+#         else:
+#             print("Координаты должны быть числами")
+#
+#     def get_coords(self):
+#         return self.__x, self.__y
+#
+#     def get_coords_x(self):
+#         return self.__x
+#
+#     def get_coords_y(self):
+#         return self.__y
+#
+#     def area(self):
+#         return (self.__x * self.__y) + self.z
+#
+#
+# p1 = Point(5, 10)
 # print(p1.__x)
 # print(p1._Point__x)
 # print(p1.zzz)
@@ -275,7 +275,7 @@ p1 = Point(5, 10)
 # print(p1.get_coords())
 # p1.z = 200
 # Point.WIDTH = 10
-print(p1.area())
+# print(p1.area())
 # p1.set_coords_x(100)
 # p1.set_coords_y(50)
 # print(p1.get_coords())
@@ -339,3 +339,211 @@ print(p1.area())
 # print('Периметр', rec1.perimetr())
 # print('Гипотенуза', round(rec1.hypo(), 2))
 # rec1.get_draw()
+
+# class Point:
+#     __slots__ = ["__x", "__y", "z"]
+#
+#     def __init__(self, x, y):
+#         self.__x = x
+#         self.__y = y
+#
+#
+# p1 = Point(5, 10)
+# p1.z = 1
+# print(p1.z)
+# print(p1.__dict__)
+
+# class Point:
+#     def __init__(self, x, y):
+#         self.__x = x
+#         self.__y = y
+#
+#     def __check_value(z):
+#         if isinstance(z, int) or isinstance(z, float):
+#             return True
+#         return False
+#
+#     def __set_coords_x(self, x):
+#         if Point.__check_value(x):
+#             self.__x = x
+#         else:
+#             raise ValueError("Невервный формат данных")
+#
+#     def __get_coords_x(self):
+#         print("Вызов __get_coords_x")
+#         return self.__x
+#
+#     def __del_coords_x(self):
+#         print("Удаление свойства")
+#         del self.__x
+#
+#     coordX = property(__get_coords_x, __set_coords_x, __del_coords_x)
+#
+#
+# p1 = Point(5, 10)
+# # p1.coordX = 100
+# # print(p1.coordX)
+# del p1.coordX
+# p1.coordX = 7
+# print(p1.coordX)
+
+
+# class Point:
+#     def __init__(self, x, y):
+#         self.__x = x
+#         self.__y = y
+#
+#     def __check_value(z):
+#         if isinstance(z, int) or isinstance(z, float):
+#             return True
+#         return False
+#
+#     @property   # геттер
+#     def coords_x(self):
+#         print("Вызов __get_coords_x")
+#         return self.__x
+#
+#     @coords_x.setter
+#     def coords_x(self, x):
+#         if Point.__check_value(x):
+#             self.__x = x
+#         else:
+#             raise ValueError("Невервный формат данных")
+#
+#     @coords_x.deleter
+#     def coords_x(self):
+#         print("Удаление свойства")
+#         del self.__x
+#
+#     # coordX = property(__get_coords_x, __set_coords_x, __del_coords_x)
+#
+#
+# p1 = Point(5, 10)
+# p1.coords_x = 100
+# print(p1.coords_x)
+# del p1.coords_x
+# p1.coords_x = 7
+# print(p1.coords_x)
+# print(p1.__dict__)
+
+
+# class KgToPounds:
+#     def __init__(self, kg):
+#         self.__kg = kg
+#
+#     @property
+#     def kg(self):
+#         return self.__kg
+#
+#     @kg.setter
+#     def kg(self, new_kg):
+#         if isinstance(new_kg, (int, float)):
+#             self.__kg = new_kg
+#         else:
+#             print("Киллограммы задаются только числами")
+#
+#     def to_pounds(self):
+#         return self.__kg * 2.205
+#
+#
+# w = KgToPounds(12)
+# print(w.to_pounds())
+# w.kg = 41
+# print(w.kg)
+# print(w.to_pounds())
+# w.kg = "десять"
+# print(w.to_pounds())
+
+
+# class Point:
+#     __count = 0
+#
+#     def __init__(self, x=0, y=0):
+#         self.__x = x
+#         self.__y = y
+#         Point.__count += 1
+#
+#     # @staticmethod
+#     def get_count():
+#         return Point.__count
+#
+#     get_count = staticmethod(get_count)
+#
+#
+# # def get_count():
+# #     return Point.count
+#
+#
+# p1 = Point()
+# p2 = Point()
+# p3 = Point()
+#
+# print(Point.get_count())
+# print(p1.get_count())
+# print(p3.get_count())
+# print(get_count())
+
+# class Change:
+#     @staticmethod
+#     def inc(x):
+#         return x + 1
+#
+#     @staticmethod
+#     def dec(x):
+#         return x - 1
+#
+#
+# print(Change.inc(10), Change.dec(10))
+# q = Change()
+# print(q.dec(5), q.inc(5))
+
+
+class Date:
+    def __init__(self, day=0, month=0, year=0):
+        self.day = day
+        self.month = month
+        self.year = year
+
+    @classmethod
+    def from_string(cls, date_as_string):
+        day, month, year = map(int, date_as_string.split("."))
+        date1 = cls(day, month, year)
+        return date1
+
+    @staticmethod
+    def is_date_valid(date_as_string):
+        if date_as_string.count('.') == 2:
+            day, month, year = map(int, date_as_string.split("."))
+            return day <= 31 and month <= 12 and year <= 3999
+
+    def string_to_db(self):
+        return f'{self.year}-{self.month}-{self.day}'
+
+
+dates = [
+    '30.12.2021',
+    '30-12-2020',
+    '01.01.2021',
+    '12.31.2020'
+]
+
+for d in dates:
+    if Date.is_date_valid(d):
+        date = Date.from_string(d)
+        db = date.string_to_db()
+        # db = Date.string_to_db(date)
+        print(db)
+    else:
+        print("Неправильная дата или формат строки с датой")
+
+# d = "16.12.2021"
+# day, month, year = map(int, d.split("."))
+# print(day, month, year)
+# d = Date()
+# date = d.from_string("16.12.2021")
+# print(date.string_to_db())
+# d1 = Date()
+# date1 = d1.from_string("03.12.2020")
+# print(date1.string_to_db())
+# date2 = Date.from_string("15.10.2021")
+# print(date2.string_to_db())
