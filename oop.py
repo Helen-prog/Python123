@@ -1258,53 +1258,533 @@
 # q = Queen()
 # q.draw()
 # q.move()
-from math import pi
+# from math import pi
+#
+#
+# class Table:
+#
+#     def __init__(self, width=None, length=None, radius=None):
+#         if radius is None:
+#             self._width = width
+#             self._length = length
+#         else:
+#             self._radius = radius
+#
+#     def set_radius(self, radius):
+#         self._radius = radius
+#
+#     def set_sides(self, width=None, length=None):
+#         if length is None:
+#             self._width = self._length = width
+#         else:
+#             self._width = width
+#             self._length = length
+#
+#     def calc_area(self):
+#         raise NotImplementedError("В дочернем классе должен быть определен метод calc_area()")
+#
+#
+# class Sq_table(Table):
+#     def calc_area(self):
+#         return self._width * self._length
+#
+#
+# class Round_table(Table):
+#     def calc_area(self):
+#         return pi * self._radius ** 2
+#
+#
+# t = Sq_table(20, 10)
+# t.set_sides(2)
+# print(t.__dict__)
+# print(t.calc_area())
+#
+# t1 = Round_table(radius=10)
+# print(t1.__dict__)
+# print(t1.calc_area())
+#
+# t2 = Round_table(radius=20)
+# t2.set_radius(60)
+# print(t2.__dict__)
+# print(t2.calc_area())
+# ======================================================
+# from math import sqrt
+# from abc import ABC, abstractmethod
+#
+#
+# class Root(ABC):
+#     def __init__(self):
+#         self.equation = ''
+#         self.res = []
+#
+#     @abstractmethod
+#     def calculate(self):
+#         pass
+#
+#     def print(self):
+#         if len(self.res) == 0:
+#             print(f'The equation {self.equation} has no roots!')
+#         elif len(self.res) == 1:
+#             print(f'The root of {self.equation} is: {self.res[0]}')
+#         else:
+#             print(f'The roots of {self.equation} are: {",".join(map(str, self.res))}')
+#
+#
+# class Linear(Root):
+#     # ax + b = 0 -> x = -b/a
+#     def __init__(self, a, b):
+#         super().__init__()
+#         self.a = a
+#         self.b = b
+#         self.equation = f'{a}x{b:+}=0'
+#
+#     def calculate(self):
+#         res = round(-self.b / self.a, 2)
+#         self.res.append(res)
+#
+#
+# class Quadratic(Root):
+#     # ax^2 + bx + c = 0 -> D = b^2 - 4ac -> x = (-b +/- vD) / (2a)
+#     def __init__(self, a, b, c):
+#         super().__init__()
+#         self.a = a
+#         self.b = b
+#         self.c = c
+#         self.equation = f'{a}x^2{b:+}x{c:+}=0'
+#
+#     def calculate(self):
+#         d = self.b ** 2 - 4 * self.a * self.c
+#         if d == 0:
+#             x = round(-self.b / (2 * self.a), 2)
+#             self.res.append(x)
+#         elif d > 0:
+#             x1 = round((-self.b + sqrt(d)) / (2 * self.a), 2)
+#             x2 = round((-self.b - sqrt(d)) / (2 * self.a), 2)
+#             self.res.extend([x1, x2])
+#
+#
+# l_eq = Linear(3, 7)
+# l_eq.calculate()
+# l_eq.print()
+# print()
+# q_eq = Quadratic(1, -2, -3)  # roots: 3, -1
+# q_eq.calculate()
+# q_eq.print()
+# # ================================================================== Андрей Валерьевич
+# from abc import ABC, abstractmethod
+# import math
+#
+#
+# class Root(ABC):
+#
+#     @abstractmethod
+#     def line(self, a, b):
+#         if a == 0 and b == 0:
+#             print('Бесконечность')
+#         elif a != 0 and (b == 0 or a <= b):
+#             print(f"The root of '3x+7=0' is: {round((-b / a), 2)}")
+#         else:
+#             raise TypeError('Корней нет')
+#
+#     @abstractmethod
+#     def quad(self, a, b, c):
+#         d = b ** 2 + 4 * a * c
+#         if d > 0:
+#             x1 = (b + math.sqrt(d)) / (2 * a)
+#             x2 = (b - math.sqrt(d)) / (2 * a)
+#             print(f"The roots of '1x^2-2x-3=0' are: {x1}, {x2}")
+#         elif d == 0:
+#             x = b / (2 * a)
+#             print(f"Корень = {x}")
+#         else:
+#             print("Корней нет")
+#
+#
+# class Linear(Root):
+#     def line(self, a, b):
+#         super().line(a, b)
+#
+#     def quad(self, a, b, c):
+#         super().quad(a, b, c)
+#
+#
+# p1 = Linear()
+# p1.line(3, 7)
+# p2 = Linear()
+# p2.quad(1, 2, 3)
+# ================================================
+# from abc import ABC, abstractmethod
+# import math
+#
+#
+# class Root(ABC):
+#
+#     @abstractmethod
+#     def calc(self):
+#         pass
+#
+#
+# class Linear(Root):
+#     def __init__(self, a, b):
+#         self.a = a
+#         self.b = b
+#
+#     def calc(self):
+#         if self.a == 0 and self.b == 0:
+#             print('Бесконечность')
+#         elif self.a != 0 and (self.b == 0 or self.a <= self.b):
+#             print(f"The root of '3x+7=0' is: {round((-self.b / self.a), 2)}")
+#         else:
+#             raise TypeError('Корней нет')
+#
+#
+# class Quadratic:
+#     def __init__(self, a, b, c):
+#         self.a = a
+#         self.b = b
+#         self.c = c
+#
+#     def calc(self):
+#         d = self.b ** 2 + 4 * self.a * self.c
+#         if d > 0:
+#             x1 = (self.b + math.sqrt(d)) / (2 * self.a)
+#             x2 = (self.b - math.sqrt(d)) / (2 * self.a)
+#             print(f"The roots of '1x^2-2x-3=0' are: {x1}, {x2}")
+#         elif d == 0:
+#             x = self.b / (2 * self.a)
+#             print(f"Корень = {x}")
+#         else:
+#             print("Корней нет")
+#
+#
+# p1 = Linear(3, 7)
+# p1.calc()
+# p2 = Quadratic(1, 2, 3)
+# p2.calc()
+# ================================================
+
+# from abc import ABC, abstractmethod
+#
+#
+# class Currency(ABC):
+#     def __init__(self, value):
+#         self.value = value
+#
+#     @abstractmethod
+#     def convert_to_rub(self):
+#         pass
+#
+#     def print_value(self):
+#         print(self.value, end=" ")
+#
+#
+# class Dollar(Currency):
+#     rate_to_rub = 74.16
+#     suffix = "USD"
+#
+#     def convert_to_rub(self):
+#         rub = self.value * Dollar.rate_to_rub
+#         return rub
+#
+#     def print_value(self):
+#         super().print_value()
+#         print(Dollar.suffix, end=" ")
+#
+#
+# class Euro(Currency):
+#     rate_to_rub = 90.14
+#     suffix = "EUR"
+#
+#     def convert_to_rub(self):
+#         rub = self.value * Euro.rate_to_rub
+#         return rub
+#
+#     def print_value(self):
+#         super().print_value()
+#         print(Euro.suffix, end=" ")
+#
+#
+# d = [Dollar(5), Dollar(10), Dollar(50), Dollar(100)]
+# e = [Euro(5), Euro(10), Euro(50), Euro(100)]
+# print("*" * 50)
+# for elem in d:
+#     elem.print_value()
+#     print(f'= {elem.convert_to_rub():.2f} RUB')
+# print("*" * 50)
+# for elem in e:
+#     elem.print_value()
+#     print(f'= {elem.convert_to_rub():.2f} RUB')
+
+# from abc import ABC, abstractmethod
+#
+#
+# class IFather(ABC):
+#     @abstractmethod
+#     def display1(self):
+#         pass
+#
+#     @abstractmethod
+#     def display2(self):
+#         pass
+#
+#
+# class Child(IFather):
+#     def display1(self):
+#         print("Child Class")
+#         print("Display 1 Abstract Method")
+#
+#
+# class GrandChild(Child):
+#     def display2(self):
+#         print("GrandChild Class")
+#         print("Display 2 Abstract Method")
+#
+#
+# gc = GrandChild()
+# gc.display2()
+# gc.display1()
 
 
-class Table:
+# class MyOuter:
+#     age = 18
+#
+#     def __init__(self, name):
+#         self.name = name
+#
+#     @classmethod
+#     def outer_class_method(cls):
+#         print("Я - метод внешнего класса")
+#
+#     def outer_obj_method(self):
+#         print("Я являюсь связующим методом объекта внешнего класса")
+#
+#     class MyInner:
+#         def __init__(self, inner_name, obj):
+#             self.inner_name = inner_name
+#             self.obj = obj
+#
+#         def inner_method(self):
+#             print("Я - метод внутреннего класса")
+#             MyOuter.outer_class_method()
+#             self.obj.outer_obj_method()
+#             print(self.obj.name)
+#
+#
+# out = MyOuter("внешний")
+# inner = out.MyInner("внутренний", out)
+# inner.inner_method()
 
-    def __init__(self, width=None, length=None, radius=None):
-        if radius is None:
-            self._width = width
-            self._length = length
-        else:
-            self._radius = radius
+# class Employee:
+#     def __init__(self):
+#         self.name = "Employee"
+#         self.intern = self.Intern()
+#         self.head = self.Head()
+#
+#     def show(self):
+#         print("Employee List")
+#         print('Name:', self.name)
+#
+#     class Intern:
+#         def __init__(self):
+#             self.name = "Smith"
+#             self.id = '657'
+#
+#         def display(self):
+#             print('Name:', self.name)
+#             print("Degree:", self.id)
+#
+#     class Head:
+#         def __init__(self):
+#             self.name = "Albina"
+#             self.id = '007'
+#
+#         def display(self):
+#             print('Name:', self.name)
+#             print("Degree:", self.id)
+#
+#
+# outer = Employee()
+# outer.show()
+#
+# d1 = outer.intern
+# d2 = outer.head
+# d1.display()
+# d2.display()
 
-    def set_radius(self, radius):
-        self._radius = radius
+# class Geeksforgeeks:
+#     def __init__(self):
+#         self.inner = self.Inner()
+#
+#     def show(self):
+#         print("This is an outer class")
+#
+#     class Inner:
+#         def __init__(self):
+#             self.inner_inner = self.InnerClass()
+#
+#         def show(self):
+#             print("This is the inner class")
+#
+#         class InnerClass:
+#             def show(self):
+#                 print("This is an inner class of inner class")
+#
+#
+# outer = Geeksforgeeks()
+# outer.show()
+#
+# inner1 = outer.inner
+# inner1.show()
+#
+# inner2 = outer.inner.inner_inner
+# inner2.show()
 
-    def set_sides(self, width=None, length=None):
-        if length is None:
-            self._width = self._length = width
-        else:
-            self._width = width
-            self._length = length
+# class OS:
+#     def system(self):
+#         return "Windows 10"
+#
+#
+# class CPU:
+#     def make(self):
+#         return "Intel"
+#
+#     def model(self):
+#         return "Core-i7"
 
-    def calc_area(self):
-        raise NotImplementedError("В дочернем классе должен быть определен метод calc_area()")
+# class Computer:
+#     def __init__(self):
+#         self.name = "PC001"
+#         # self.os = self.OS()
+#         # self.cpu = self.CPU()
+#
+#     class OS:
+#         def system(self):
+#             return "Windows 10"
+#
+#     class CPU:
+#         def make(self):
+#             return "Intel"
+#
+#         def model(self):
+#             return "Core-i7"
+#
+#
+# comp = Computer()
+# my_os = comp.OS()
+# my_cpu = comp.CPU()
+#
+# print(comp.name)
+# print(my_os.system())
+# print(my_cpu.make())
+# print(my_cpu.model())
+
+# class Base:
+#     def __init__(self):
+#         self.db = self.Inner()
+#
+#     def display(self):
+#         print("In Base Class")
+#
+#     class Inner:
+#         def display1(self):
+#             print('Inner of Base Class')
+#
+#
+# class SubClass(Base):
+#     def __init__(self):
+#         print('In SubClass')
+#         super().__init__()
+#
+#     class Inner(Base.Inner):
+#
+#         def display2(self):
+#             print("Inner of SubClass")
+#
+#
+# a = SubClass()
+# a.display()
+#
+# # b = a.db
+# b = SubClass.Inner()
+# b.display1()
+# b.display2()
 
 
-class Sq_table(Table):
-    def calc_area(self):
-        return self._width * self._length
+# class Creature:
+#     def __init__(self, name):
+#         self.name = name
+#
+#
+# class Animal(Creature):
+#     def sleep(self):
+#         print(self.name + " is sleeping")
+#
+#
+# class Pet(Creature):
+#     def play(self):
+#         print(self.name + " is playing")
+#
+#
+# class Dog(Animal, Pet):
+#     def bark(self):
+#         print(self.name + " is braking")
+#
+#
+# b = Dog("Buddy")
+# b.bark()
+# b.play()
+# b.sleep()
+
+# class A(object):
+#     pass
+#
+#
+# class AA(object):
+#     pass
+#
+#
+# class B(A):
+#     pass
+#
+#
+# class C(AA):
+#     pass
+#
+#
+# class D(B, C):
+#     pass
+#
+#
+# print(D.mro())
+
+class Point:
+    def __init__(self, x=0, y=0):
+        self.x = x
+        self.y = y
+
+    def __str__(self):
+        return f"({self.x}, {self.y})"
 
 
-class Round_table(Table):
-    def calc_area(self):
-        return pi * self._radius ** 2
+class Styles:
+    def __init__(self, color="red", width=1):
+        print("Инициализатор Styles")
+        self._color = color
+        self._width = width
 
 
-t = Sq_table(20, 10)
-t.set_sides(2)
-print(t.__dict__)
-print(t.calc_area())
+class Pos:
+    def __init__(self, sp: Point, ep: Point, *args):
+        print("Инициализатор Pos")
+        self._sp = sp
+        self._ep = ep
+        Styles.__init__(self, *args)
 
-t1 = Round_table(radius=10)
-print(t1.__dict__)
-print(t1.calc_area())
 
-t2 = Round_table(radius=20)
-t2.set_radius(60)
-print(t2.__dict__)
-print(t2.calc_area())
+class Line(Pos, Styles):
+    def draw(self):
+        print(f"Рисование линии: {self._sp}, {self._ep}, {self._color}, {self._width}")
 
+
+l1 = Line(Point(10, 10), Point(100, 100), "green", 5)
+l1.draw()
