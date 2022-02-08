@@ -9,7 +9,7 @@ class CarClass:
         print(f"{self.brand}, {self.model}, {self.year} год, {self.probeg} км")
 
 
-print(__name__)
+# print(__name__)
 
 
 if __name__ == "__main__":
