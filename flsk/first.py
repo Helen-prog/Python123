@@ -2,6 +2,7 @@ import sqlite3
 import os
 from flask import Flask, render_template, url_for, request, flash, session, redirect, abort, g
 from FDataBase import FDataBase
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # конфигурация
 DATABASE = '/tmp/flsk.db'
@@ -40,18 +41,23 @@ def close_db(error):
         g.link_db.close()
 
 
-@app.route("/")
-def index():
+dbase = None
+
+
+@app.before_request
+def before_request():
+    global dbase
     db = get_db()
     dbase = FDataBase(db)
+
+
+@app.route("/")
+def index():
     return render_template("index.html", title="Главная", menu=dbase.get_menu(), posts=dbase.get_post_anonce())
 
 
 @app.route("/add_post", methods=['POST', 'GET'])
 def add_post():
-    db = get_db()
-    dbase = FDataBase(db)
-
     if request.method == 'POST':
         if len(request.form['name']) > 4 and len(request.form['post']) > 10:
             res = dbase.add_post(request.form['name'], request.form['post'], request.form['url'])
@@ -67,14 +73,32 @@ def add_post():
 
 @app.route("/post/<alias>")
 def show_post(alias):
-    db = get_db()
-    dbase = FDataBase(db)
     title, post = dbase.get_post(alias)
     if not title:
         abort(404)
 
     return render_template("post.html", title=title, post=post, menu=dbase.get_menu())
 
+
+@app.route("/login")
+def login():
+    return render_template("login.html", menu=dbase.get_menu(), title="Авторизация")
+
+
+@app.route("/register", methods=["POST", "GET"])
+def register():
+    if request.method == 'POST':
+        if len(request.form['name']) > 4 and len(request.form['email']) > 4 and len(request.form['psw']) > 4 and \
+                request.form['psw'] == request.form['psw2']:
+            hash = generate_password_hash(request.form['psw'])
+            res = dbase.add_user(request.form['name'], request.form['email'], hash)
+            if res:
+                flash("Вы успешно зарегистрированы", "success")
+                return redirect(url_for("login"))
+            else:
+                flash("Ошибка при добавлении в БД", "error")
+
+    return render_template("register.html", menu=dbase.get_menu(), title="Регистрация")
 
 # @app.route("/about")
 # def about():
