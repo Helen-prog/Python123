@@ -3,6 +3,8 @@ import os
 from flask import Flask, render_template, url_for, request, flash, session, redirect, abort, g
 from FDataBase import FDataBase
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, login_user, login_required, current_user, logout_user
+from UserLogin import UserLogin
 
 # конфигурация
 DATABASE = '/tmp/flsk.db'
@@ -13,6 +15,8 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'flsk.db')))
+
+login_manager = LoginManager(app)
 
 
 def connect_db():
@@ -72,6 +76,7 @@ def add_post():
 
 
 @app.route("/post/<alias>")
+@login_required
 def show_post(alias):
     title, post = dbase.get_post(alias)
     if not title:
@@ -80,8 +85,17 @@ def show_post(alias):
     return render_template("post.html", title=title, post=post, menu=dbase.get_menu())
 
 
-@app.route("/login")
+@app.route("/login", methods=["POST", "GET"])
 def login():
+    if request.method == 'POST':
+        user = dbase.get_user_by_email(request.form['email'])
+        if user and check_password_hash(user['psw'], request.form['psw']):
+            user_login = UserLogin().create(user)
+            login_user(user_login)
+            return redirect(url_for('profile'))
+
+        flash("Неверная пара логин/пароль", "error")
+
     return render_template("login.html", menu=dbase.get_menu(), title="Авторизация")
 
 
@@ -99,6 +113,29 @@ def register():
                 flash("Ошибка при добавлении в БД", "error")
 
     return render_template("register.html", menu=dbase.get_menu(), title="Регистрация")
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    print("load_user")
+    return UserLogin().from_db(user_id, dbase)
+
+
+@app.route('/profile')
+@login_required
+def profile():
+    return f"""
+    <p><a href="{url_for('logout')}">Выйти из профиля</a></p>
+    <p>Пользователь: {current_user.get_id()}</p>
+    """
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash("Вы вышли из аккаунта", "success")
+    return redirect(url_for('login'))
 
 # @app.route("/about")
 # def about():
