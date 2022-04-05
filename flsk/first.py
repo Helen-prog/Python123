@@ -10,6 +10,7 @@ from UserLogin import UserLogin
 DATABASE = '/tmp/flsk.db'
 DEBUG = True
 SECRET_KEY = '995e72cddc5798dcfaa7f771b63a98aafa8486bf'
+MAX_CONTENT_LENGTH = 1024 * 1024
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -17,6 +18,9 @@ app.config.from_object(__name__)
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'flsk.db')))
 
 login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.login_message = "Авторизуйтесь для доступа к закрытым стариницам"
+login_manager.login_message_category = "success"
 
 
 def connect_db():
@@ -87,12 +91,14 @@ def show_post(alias):
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('profile'))
     if request.method == 'POST':
         user = dbase.get_user_by_email(request.form['email'])
         if user and check_password_hash(user['psw'], request.form['psw']):
             user_login = UserLogin().create(user)
             login_user(user_login)
-            return redirect(url_for('profile'))
+            return redirect(request.args.get("next") or url_for('profile'))
 
         flash("Неверная пара логин/пароль", "error")
 
@@ -124,10 +130,7 @@ def load_user(user_id):
 @app.route('/profile')
 @login_required
 def profile():
-    return f"""
-    <p><a href="{url_for('logout')}">Выйти из профиля</a></p>
-    <p>Пользователь: {current_user.get_id()}</p>
-    """
+    return render_template("profile.html", menu=dbase.get_menu(), title="Профиль")
 
 
 @app.route('/logout')
@@ -136,6 +139,17 @@ def logout():
     logout_user()
     flash("Вы вышли из аккаунта", "success")
     return redirect(url_for('login'))
+
+@app.route('/userava')
+@login_required
+def userava():
+    img = current_user.get_avatar(app)
+    if not img:
+        return ""
+
+    h = app.make_response(img)
+    h.headers['Content-Type'] = 'image/png'
+    return h
 
 # @app.route("/about")
 # def about():
