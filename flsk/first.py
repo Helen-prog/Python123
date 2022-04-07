@@ -5,6 +5,7 @@ from FDataBase import FDataBase
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from UserLogin import UserLogin
+from admin.admin import admin
 
 # конфигурация
 DATABASE = '/tmp/flsk.db'
@@ -16,6 +17,7 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'flsk.db')))
+app.register_blueprint(admin, url_prefix="/admin")
 
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
@@ -127,7 +129,7 @@ def load_user(user_id):
     return UserLogin().from_db(user_id, dbase)
 
 
-@app.route('/profile')
+@app.route('/profile', methods=["POST", "GET"])
 @login_required
 def profile():
     return render_template("profile.html", menu=dbase.get_menu(), title="Профиль")
@@ -140,6 +142,7 @@ def logout():
     flash("Вы вышли из аккаунта", "success")
     return redirect(url_for('login'))
 
+
 @app.route('/userava')
 @login_required
 def userava():
@@ -150,6 +153,27 @@ def userava():
     h = app.make_response(img)
     h.headers['Content-Type'] = 'image/png'
     return h
+
+
+@app.route('/upload', methods=['POST', 'GET'])
+@login_required
+def upload():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and current_user.verify_ext(file.filename):
+            try:
+                img = file.read()
+                res = dbase.update_user_avatar(img, current_user.get_id())
+                if not res:
+                    flash("Ошибка обновления аватара", "error")
+                flash("Аватар обновлен", "success")
+            except FileNotFoundError as e:
+                flash("Ошибка обновления аватара", "error")
+        else:
+            flash("Ошибка обновления аватара", "error")
+    return redirect(url_for('profile'))
+
+
 
 # @app.route("/about")
 # def about():

@@ -4,35 +4,40 @@ body{
     padding: 0;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-.menu{
+#login{
+    background: #FFF;
+    width: 260px;
+    margin: 100px auto;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 0 10px 2px #CCC;
+    border-radius: 6px;
+}
+.login .title{
+    text-align: center;
+    font-weight: bold;
+}
+input{
+    width: 100%;
+}
+.meinmenu{
+    background: gold;
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
     list-style: none;
-    background: orange;
     padding: 20px;
     margin-top: 0;
 }
-.menu a{
-    font-weight: bold;
-    color: brown;
+.meinmenu li{
+    margin-right: 30px;
 }
+
+
 .content{
     margin: 0 auto;
     max-width: 1200px;
     padding: 20px;
     box-sizing: border-box;
-}
-
-.flash{
-    padding: 10px;
-}
-.flash.success{
-    border: 1px solid #21DB56;
-    background: #AEFFC5;
-}
-.flash.error{
-    border: 1px solid #FF4343;
-    background: #FF9C9C;
 }
 ul{
     list-style: none;
@@ -61,22 +66,4 @@ p.title:hover{
     margin-top: -1px;
     margin-bottom: 40px;
     background: #FFF;
-}
-.profile-ava{
-    width: 130px;
-    padding: 10px;
-}
-.profile-load{
-    max-width: 150px;
-    overflow: hidden;
-    margin-top: 10px;
-}
-.profile-load input[type=submit], .profile-load input[type=file]{
-    width: 100%;
-    font-size: 18px;
-}
-.profile-panel{
-    padding: 32px 0 0 10px;
-    vertical-align: top;
-    font-weight: bold;
 }
