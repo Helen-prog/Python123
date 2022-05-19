@@ -7,7 +7,7 @@
     {% if post.photo %}
         <img class="image" src="{{ post.photo.url }}" alt="">
     {% endif %}
-    {{ post.content|linebreaks }}
+    {{ post.content|safe }}
 </div>
 
 
