@@ -3340,4 +3340,10 @@ import os.path
 
 
 
-print(chr(49))
+# print(chr(149))
+# a = "Hello"
+# if a:
+#     print(a)
+print()
+for i in range(8):
+    print(i, end=" ")
